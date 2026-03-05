@@ -30,8 +30,8 @@ st.title("🎨 作品說明卡生成工具")
 
 with st.sidebar:
     st.header("📏 排版參數")
-    xl = st.number_input("左欄 X (往右加大)", value=166.0)
-    xr = st.number_input("右欄 X (往右加大)", value=435.0)
+    xl = st.number_input("左欄 X (往右加大)", value=166)
+    xr = st.number_input("右欄 X (往右加大)", value=435)
     st.divider()
     st_sz = st.slider("作品名 字體大小", 10, 40, 25)
     si_sz = st.slider("大小/年代 字體大小", 10, 40, 15)
@@ -124,4 +124,5 @@ if st.session_state.final_pdf_data:
         b64_pdf = base64.b64encode(st.session_state.final_pdf_data).decode('utf-8')
         pdf_display = f'<iframe src="data:application/pdf;base64,{b64_pdf}" width="100%" height="600"></iframe>'
         st.markdown(pdf_display, unsafe_allow_html=True)
+
 
