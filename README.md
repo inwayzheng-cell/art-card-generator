@@ -1,14 +1,34 @@
-# 🎨 作品說明卡自動生成器 (Art Card Generator)
+# 🎨 作品說明卡批次生成器 (Art Card Generator)
 
-這是一個專門為藝術展覽設計的自動化工具。
+[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://share.streamlit.io/) 
 
-### 🌟 核心功能
-* **批次處理**：自動根據「作者」分組生成 PDF。
-* **網頁操作**：免安裝環境，隨開即用。
-* **自訂字型**：支援繁體中文標楷體。
+這是一個專門為藝術展覽開發的自動化工具。透過 **Python** 與 **Streamlit** 驅動，能讀取 Excel 清單並自動將資料填入 PDF 模板，實現一鍵批次排版。
 
-### 📁 檔案清單
-1. `streamlit_app.py`: 主程式
-2. `requirements.txt`: 系統套件
-3. `packages.txt`: PDF 組件
-4. `kaiu.ttf`: 標楷體字型
+## 🌟 重點特色
+- **自動分檔**：依據「作者」名稱自動分類，每個作者生成一份獨立 PDF。
+- **繁體中文支援**：內建 `標楷體 (kaiu.ttf)`，解決 PDF 中文亂碼問題。
+- **即時排版微調**：
+  - 調整文字 X/Y 座標位置。
+  - 自訂作品名、年代、作者的字體大小。
+  - 彈性調整行距間隔。
+- **一鍵打包**：所有生成的 PDF 會自動打包成 ZIP 壓縮檔供下載。
+
+## 🛠️ 技術架構
+- **UI 框架**：Streamlit
+- **PDF 繪製**：ReportLab
+- **PDF 合成**：pikepdf (QPDF 引擎)
+- **數據處理**：Pandas
+
+## 📁 專案檔案結構
+- `streamlit_app.py`: 網頁主程式邏輯。
+- `requirements.txt`: Python 依賴庫清單。
+- `packages.txt`: 系統級組件 (libqpdf-dev)。
+- `kaiu.ttf`: 繁體中文字型檔。
+
+## 🚀 部署說明
+1. 將本儲存庫連動至 [Streamlit Cloud](https://share.streamlit.io/)。
+2. 確保儲存庫根目錄包含 `packages.txt` 以正確安裝 PDF 處理引擎。
+3. 部署完成後即可透過瀏覽器在任何裝置上使用。
+
+---
+*Created by [Your Name/GitHub ID]*
