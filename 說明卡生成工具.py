@@ -24,12 +24,12 @@ def format_value(val):
     if s.endswith(".0"): s = s[:-2]
     return s.replace(" .", ".").replace(". ", ".")
 
-# 1. 
-LOGO_URL = "https://raw.githubusercontent.com/inwayzheng-cell/art-card-generator/main/logo.png"
+# 1.取得圖片的相對路徑
+icon_path = os.path.join("static", "logo.png")
 
 st.set_page_config(
     page_title="作品小卡生成器",
-    page_icon=LOGO_URL,
+    page_icon=icon_path, # 使用相對路徑
     layout="wide"
 )
 
@@ -145,6 +145,7 @@ if st.session_state.final_pdf_data:
         b64_pdf = base64.b64encode(st.session_state.final_pdf_data).decode('utf-8')
         pdf_display = f'<iframe src="data:application/pdf;base64,{b64_pdf}" width="100%" height="600"></iframe>'
         st.markdown(pdf_display, unsafe_allow_html=True)
+
 
 
 
