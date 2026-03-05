@@ -115,14 +115,16 @@ if st.session_state.last_pdf_data:
     st.divider()
     st.subheader("👁️ 排版成果預覽")
     
-    # 轉為 Base64
+    # 1. 提供一個單獨的 PDF 下載按鈕，專門給手機看
+    st.download_button(
+        label="📱 手機無法預覽？點此直接下載單份 PDF 查看",
+        data=st.session_state.last_pdf_data,
+        file_name="預覽說明卡.pdf",
+        mime="application/pdf",
+        use_container_width=True
+    )
+    
+    # 2. 原有的嵌入預覽 (保留給電腦版)
     b64_pdf = base64.b64encode(st.session_state.last_pdf_data).decode('utf-8')
-    
-    # 手機專用按鈕：點擊後直接用瀏覽器開啟 PDF
-    pdf_href = f'<a href="data:application/pdf;base64,{b64_pdf}" target="_blank"><button style="width:100%; padding:15px; background-color:#4CAF50; color:white; border:none; border-radius:10px; font-size:16px; cursor:pointer;">🔍 手機無法預覽？點此全螢幕查看</button></a>'
-    st.markdown(pdf_href, unsafe_allow_html=True)
-    st.caption("※ 手機若上方預覽區空白，請點擊綠色按鈕開啟。")
-    
-    # 電腦版嵌入預覽
     pdf_display = f'<iframe src="data:application/pdf;base64,{b64_pdf}" width="100%" height="800" type="application/pdf"></iframe>'
     st.markdown(pdf_display, unsafe_allow_html=True)
