@@ -26,7 +26,7 @@ def format_value(val):
 
 # --- 網頁介面 ---
 st.set_page_config(page_title="作品說明卡生成器", page_icon="🎨", layout="wide")
-st.title("🎨 作品說明卡網頁生成工具")
+st.title("說明卡生成工具")
 
 with st.sidebar:
     st.header("📏 排版參數")
@@ -123,3 +123,4 @@ if st.session_state.zip_data:
             b64_pdf = base64.b64encode(st.session_state.last_pdf_data).decode('utf-8')
             pdf_display = f'<iframe src="data:application/pdf;base64,{b64_pdf}" width="100%" height="600" type="application/pdf"></iframe>'
             st.markdown(pdf_display, unsafe_allow_html=True)
+
