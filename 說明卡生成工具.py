@@ -91,10 +91,22 @@ if st.button("🚀 生成單一 PDF 並預覽", use_container_width=True):
                 use_container_width=True
             )
 
-            # --- 預覽 ---
-            base64_pdf = base64.b64encode(result_pdf).decode('utf-8')
-            pdf_display = f'<iframe src="data:application/pdf;base64,{base64_pdf}" width="100%" height="800"></iframe>'
-            st.markdown(pdf_display, unsafe_allow_html=True)
+# --- 介面顯示：PDF 預覽區 ---
+            if last_pdf_data:
+                st.divider()
+                st.subheader("👁️ 排版成果預覽")
+                
+                # 將 PDF 轉為 Base64
+                base64_pdf = base64.b64encode(last_pdf_data).decode('utf-8')
+                
+                # 建立一個下載/預覽連結 (對手機更友善)
+                pdf_link = f'<a href="data:application/pdf;base64,{base64_pdf}" target="_blank" style="text-decoration:none;"><button style="width:100%; padding:10px; background-color:#FF4B4B; color:white; border:none; border-radius:5px;">🔍 手機點此開啟全螢幕預覽</button></a>'
+                st.markdown(pdf_link, unsafe_allow_html=True)
+                
+                # 原有的內嵌視窗 (保留給電腦版看，手機若空白可點上面的按鈕)
+                pdf_display = f'<iframe src="data:application/pdf;base64,{base64_pdf}" width="100%" height="800" type="application/pdf"></iframe>'
+                st.markdown(pdf_display, unsafe_allow_html=True)
 
         except Exception as e:
             st.error(f"發生錯誤: {e}")
+
