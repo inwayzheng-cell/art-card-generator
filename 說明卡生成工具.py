@@ -7,15 +7,16 @@ from reportlab.lib.pagesizes import A4
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.pdfbase import pdfmetrics
 import pikepdf
+from pdf2image import convert_from_bytes
 
-# 1. 自動偵測字型
+# 1. 字型設定
 FONT_NAME = "Kaiu"
 FONT_PATH = "kaiu.ttf"
 
 if os.path.exists(FONT_PATH):
     pdfmetrics.registerFont(TTFont(FONT_NAME, FONT_PATH))
 else:
-    st.error("⚠️ 找不到 kaiu.ttf 字型檔，請確保檔案已上傳至 GitHub 儲存庫。")
+    st.error("⚠️ 找不到 kaiu.ttf 字型檔，請確保檔案已上傳至 GitHub。")
 
 def format_value(val):
     if pd.isna(val): return ""
@@ -29,8 +30,8 @@ st.title("🎨 作品說明卡網頁生成工具")
 
 with st.sidebar:
     st.header("📏 排版參數")
-    xl = st.number_input("左欄 X (往右數字加大)", value=166.0)
-    xr = st.number_input("右欄 X (往右數字加大)", value=435.0)
+    xl = st.number_input("左欄 X (往右加大)", value=166.0)
+    xr = st.number_input("右欄 X (往右加大)", value=435.0)
     st.divider()
     st_sz = st.slider("作品名 字體大小", 10, 40, 19)
     si_sz = st.slider("大小/年代 字體大小", 10, 40, 15)
@@ -39,20 +40,20 @@ with st.sidebar:
     g1 = st.number_input("作品名 -> 大小年代間距", value=25.0)
     g2 = st.number_input("作品名 -> 作者間距", value=60.0)
 
-# 主畫面
-col1, col2 = st.columns(2)
-with col1:
-    uploaded_excel = st.file_uploader("1. 上傳 Excel ", type=["xlsx"])
-with col2:
-    uploaded_pdf = st.file_uploader("2. 上傳 PDF 模板背景", type=["pdf"])
-
-# 初始化變數
+# 初始化 Session State
 if "last_pdf_data" not in st.session_state:
     st.session_state.last_pdf_data = None
 if "zip_data" not in st.session_state:
     st.session_state.zip_data = None
 
-if st.button("🚀 開始批次生成並預覽", use_container_width=True):
+# 檔案上傳區
+col1, col2 = st.columns(2)
+with col1:
+    uploaded_excel = st.file_uploader("1. 上傳 Excel", type=["xlsx"])
+with col2:
+    uploaded_pdf = st.file_uploader("2. 上傳 PDF 模板", type=["pdf"])
+
+if st.button("🚀 開始生成所有檔案", use_container_width=True):
     if uploaded_excel and uploaded_pdf:
         try:
             df = pd.read_excel(uploaded_excel)
@@ -94,41 +95,31 @@ if st.button("🚀 開始批次生成並預覽", use_container_width=True):
                     zip_file.writestr(f"{safe_name}.pdf", st.session_state.last_pdf_data)
             
             st.session_state.zip_data = zip_buffer.getvalue()
-            st.success("✅ 生成完畢！")
-
+            st.success(f"✅ 生成完畢！已處理 {len(grouped)} 組資料。")
         except Exception as e:
             st.error(f"發生錯誤: {e}")
     else:
         st.warning("⚠️ 請先上傳 Excel 與 PDF 模板。")
 
-# --- 顯示下載按鈕與預覽區 (只有在生成後才顯示) ---
+# --- 顯示區 ---
 if st.session_state.zip_data:
-    st.info("💡 提示：安卓手機請點擊下方「下載單份」按鈕進行預覽。")
-    
+    st.divider()
     col_dl1, col_dl2 = st.columns(2)
     with col_dl1:
-        st.download_button(
-            label="📥 下載所有 PDF (ZIP)",
-            data=st.session_state.zip_data,
-            file_name="說明卡.zip",
-            mime="application/zip",
-            use_container_width=True
-        )
+        st.download_button("📥 下載所有 PDF (ZIP)", st.session_state.zip_data, "說明卡產出.zip", "application/zip", use_container_width=True)
     with col_dl2:
-        # 這是專門給安卓手機「預覽」用的按鈕
-        st.download_button(
-            label="👁️ 點此查看單份預覽 (PDF)",
-            data=st.session_state.last_pdf_data,
-            file_name="預覽檢查.pdf",
-            mime="application/pdf",
-            use_container_width=True
-        )
+        st.download_button("👁️ 下載單份預覽 (PDF)", st.session_state.last_pdf_data, "單份預覽.pdf", "application/pdf", use_container_width=True)
 
-if st.session_state.last_pdf_data:
-    st.divider()
-    st.subheader("👁️ 電腦版即時預覽")
-    
-    # 轉為 Base64 (這在電腦版 Chrome OK, 但安卓手機會變空白)
-    b64_pdf = base64.b64encode(st.session_state.last_pdf_data).decode('utf-8')
-    pdf_display = f'<iframe src="data:application/pdf;base64,{b64_pdf}" width="100%" height="800" type="application/pdf"></iframe>'
-    st.markdown(pdf_display, unsafe_allow_html=True)
+    # 圖片預覽邏輯 (手機專用)
+    if st.session_state.last_pdf_data:
+        st.subheader("👁️ 即時畫面預覽")
+        try:
+            # 將 PDF 轉為圖片以便在手機網頁直接顯示
+            images = convert_from_bytes(st.session_state.last_pdf_data, first_page=1, last_page=1)
+            if images:
+                st.image(images[0], caption="排版示意圖 (第一頁)", use_container_width=True)
+        except Exception as e:
+            st.info("💡 電腦版預覽載入中...")
+            b64_pdf = base64.b64encode(st.session_state.last_pdf_data).decode('utf-8')
+            pdf_display = f'<iframe src="data:application/pdf;base64,{b64_pdf}" width="100%" height="600" type="application/pdf"></iframe>'
+            st.markdown(pdf_display, unsafe_allow_html=True)
