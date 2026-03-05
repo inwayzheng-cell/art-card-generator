@@ -37,10 +37,7 @@
 
 ## 線上存取
 可以透過以下連結直接在線上使用此工具：
-- https://art-card-generator-9zteodp8hffljwmi2iuexx.streamlit.app/
-
-
-
+- https://art-card-generator-gaggshe93vfd3bk3vnzje8.streamlit.app/
 
 
 
