@@ -24,6 +24,12 @@
 - `requirements.txt`: Python 依賴庫清單。
 - `packages.txt`: 系統級組件 (libqpdf-dev)。
 - `kaiu.ttf`: 繁體中文字型檔。
+- 
+## 📋 Excel 檔案格式說明
+請確保您的 Excel 檔案 (.xlsx) 欄位依照以下順序排列，程式將會自動讀取：
+序號,作者,名稱,大小,創作年份
+1,王大明,無敵鐵金剛,100x100x100,2025
+2,王大明,變形金剛,50x50x50,2024
 
 ## 🚀 部署說明
 1. 將本儲存庫連動至 [Streamlit Cloud](https://share.streamlit.io/)。
@@ -33,3 +39,4 @@
 ---
 
 https://art-card-generator-9zteodp8hffljwmi2iuexx.streamlit.app/
+
