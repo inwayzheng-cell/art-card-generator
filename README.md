@@ -36,9 +36,10 @@
 2. 確保儲存庫根目錄包含 `packages.txt` 以正確安裝 PDF 處理引擎。
 3. 部署完成後即可透過瀏覽器在任何裝置上使用。
 
-##線上存取
+## 線上存取
 可以透過以下連結直接在線上使用此工具：
-https://art-card-generator-9zteodp8hffljwmi2iuexx.streamlit.app/
+- https://art-card-generator-9zteodp8hffljwmi2iuexx.streamlit.app/
+
 
 
 
