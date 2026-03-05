@@ -103,28 +103,32 @@ if st.button("🚀 開始批次生成並預覽", use_container_width=True):
 
 # --- 顯示下載按鈕與預覽區 (只有在生成後才顯示) ---
 if st.session_state.zip_data:
-    st.download_button(
-        label="📥 下載所有 PDF (ZIP)",
-        data=st.session_state.zip_data,
-        file_name="說明卡產出.zip",
-        mime="application/zip",
-        use_container_width=True
-    )
+    st.info("💡 提示：安卓手機請點擊下方「下載單份」按鈕進行預覽。")
+    
+    col_dl1, col_dl2 = st.columns(2)
+    with col_dl1:
+        st.download_button(
+            label="📥 下載所有 PDF (ZIP)",
+            data=st.session_state.zip_data,
+            file_name="說明卡.zip",
+            mime="application/zip",
+            use_container_width=True
+        )
+    with col_dl2:
+        # 這是專門給安卓手機「預覽」用的按鈕
+        st.download_button(
+            label="👁️ 點此查看單份預覽 (PDF)",
+            data=st.session_state.last_pdf_data,
+            file_name="預覽檢查.pdf",
+            mime="application/pdf",
+            use_container_width=True
+        )
 
 if st.session_state.last_pdf_data:
     st.divider()
-    st.subheader("👁️ 排版成果預覽")
+    st.subheader("👁️ 電腦版即時預覽")
     
-    # 1. 提供一個單獨的 PDF 下載按鈕，專門給手機看
-    st.download_button(
-        label="📱 手機無法預覽？點此直接下載單份 PDF 查看",
-        data=st.session_state.last_pdf_data,
-        file_name="預覽說明卡.pdf",
-        mime="application/pdf",
-        use_container_width=True
-    )
-    
-    # 2. 原有的嵌入預覽 (保留給電腦版)
+    # 轉為 Base64 (這在電腦版 Chrome OK, 但安卓手機會變空白)
     b64_pdf = base64.b64encode(st.session_state.last_pdf_data).decode('utf-8')
     pdf_display = f'<iframe src="data:application/pdf;base64,{b64_pdf}" width="100%" height="800" type="application/pdf"></iframe>'
     st.markdown(pdf_display, unsafe_allow_html=True)
