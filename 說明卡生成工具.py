@@ -24,15 +24,21 @@ def format_value(val):
     if s.endswith(".0"): s = s[:-2]
     return s.replace(" .", ".").replace(". ", ".")
 
-# --- 網頁介面 ---
+# 1. 頁面配置
 st.set_page_config(
     page_title="作品說明卡生成器", 
     page_icon="logo.png", 
     layout="wide"
 )
 
-# 這行是為了讓手機桌面圖示生效
-st.markdown('<link rel="apple-touch-icon" href="https://raw.githubusercontent.com/inwayzheng-cell/art-card-generator/main/logo.png">', unsafe_allow_html=True)
+# 2. 強制手機抓取新圖示 (加上 ?v=1 參數)
+LOGO_URL = "https://raw.githubusercontent.com/inwayzheng-cell/art-card-generator/main/logo.png?v=1"
+
+st.markdown(f"""
+    <link rel="apple-touch-icon" href="{LOGO_URL}">
+    <link rel="icon" type="image/png" href="{LOGO_URL}">
+    <link rel="shortcut icon" href="{LOGO_URL}">
+    """, unsafe_allow_html=True)
 
 st.title("🎨作品小卡生成工具")
 
@@ -132,4 +138,5 @@ if st.session_state.final_pdf_data:
         b64_pdf = base64.b64encode(st.session_state.final_pdf_data).decode('utf-8')
         pdf_display = f'<iframe src="data:application/pdf;base64,{b64_pdf}" width="100%" height="600"></iframe>'
         st.markdown(pdf_display, unsafe_allow_html=True)
+
 
