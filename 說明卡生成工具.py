@@ -25,20 +25,27 @@ def format_value(val):
     return s.replace(" .", ".").replace(". ", ".")
 
 # 1. 
+LOGO_URL = "https://raw.githubusercontent.com/inwayzheng-cell/art-card-generator/main/logo.png"
+
 st.set_page_config(
-    page_title="🎨 作品小卡生成器",  
-    page_icon="logo.png", 
+    page_title="作品小卡生成器",
+    page_icon=LOGO_URL, 
     layout="wide"
 )
 
-# 2. 
-LOGO_URL = "https://raw.githubusercontent.com/inwayzheng-cell/art-card-generator/main/logo.png?v=5"
-
+# 2.
 st.markdown(f"""
-    <link rel="icon" sizes="192x192" href="{LOGO_URL}">
-    <link rel="apple-touch-icon" href="{LOGO_URL}">
-    <meta name="mobile-web-app-capable" content="yes">
-    """, unsafe_allow_html=True)
+    <style>
+        /* 隱藏右上角 Streamlit 選單 */
+        #MainMenu {{visibility: hidden;}}
+        footer {{visibility: hidden;}}
+    </style>
+    
+    <link rel="apple-touch-icon" sizes="180x180" href="{LOGO_URL}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{LOGO_URL}">
+    <link rel="icon" type="image/png" sizes="192x192" href="{LOGO_URL}">
+    <link rel="shortcut icon" href="{LOGO_URL}">
+""", unsafe_allow_html=True)
 
 st.title("🎨作品小卡生成工具")
 
@@ -138,6 +145,7 @@ if st.session_state.final_pdf_data:
         b64_pdf = base64.b64encode(st.session_state.final_pdf_data).decode('utf-8')
         pdf_display = f'<iframe src="data:application/pdf;base64,{b64_pdf}" width="100%" height="600"></iframe>'
         st.markdown(pdf_display, unsafe_allow_html=True)
+
 
 
 
