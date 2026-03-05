@@ -25,7 +25,13 @@ def format_value(val):
     return s.replace(" .", ".").replace(". ", ".")
 
 # --- 網頁介面 ---
-st.set_page_config(page_title="作品小卡生成器", page_icon="🎨", layout="wide")
+st.set_page_config(
+    page_title="作品說明卡生成器", 
+    # 建議在 st.title 之後加入
+st.markdown(f'<link rel="apple-touch-icon" href="https://raw.githubusercontent.com/inwayzheng-cell/art-card-generator/main/logo.png">', unsafe_allow_html=True)
+    page_icon="logo.png",  # 這裡填入你上傳到 GitHub 的圖片檔名
+    layout="wide"
+)
 st.title("🎨作品小卡生成工具")
 
 with st.sidebar:
@@ -124,9 +130,3 @@ if st.session_state.final_pdf_data:
         b64_pdf = base64.b64encode(st.session_state.final_pdf_data).decode('utf-8')
         pdf_display = f'<iframe src="data:application/pdf;base64,{b64_pdf}" width="100%" height="600"></iframe>'
         st.markdown(pdf_display, unsafe_allow_html=True)
-
-
-
-
-
-
