@@ -32,12 +32,17 @@ st.set_page_config(
 )
 
 # 2. 強制手機抓取新圖示 (加上 ?v=1 參數)
-LOGO_URL = "https://raw.githubusercontent.com/inwayzheng-cell/art-card-generator/main/logo.png?v=1"
+LOGO_URL = "https://raw.githubusercontent.com/inwayzheng-cell/art-card-generator/main/logo.png?v=3"
 
 st.markdown(f"""
-    <link rel="apple-touch-icon" href="{LOGO_URL}">
-    <link rel="icon" type="image/png" href="{LOGO_URL}">
-    <link rel="shortcut icon" href="{LOGO_URL}">
+    <head>
+        <link rel="icon" type="image/png" href="{LOGO_URL}">
+        <link rel="apple-touch-icon" sizes="180x180" href="{LOGO_URL}">
+        <link rel="icon" sizes="192x192" href="{LOGO_URL}">
+        <link rel="icon" sizes="512x512" href="{LOGO_URL}">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-title" content="作品小卡生成">
+    </head>
     """, unsafe_allow_html=True)
 
 st.title("🎨作品小卡生成工具")
@@ -138,5 +143,6 @@ if st.session_state.final_pdf_data:
         b64_pdf = base64.b64encode(st.session_state.final_pdf_data).decode('utf-8')
         pdf_display = f'<iframe src="data:application/pdf;base64,{b64_pdf}" width="100%" height="600"></iframe>'
         st.markdown(pdf_display, unsafe_allow_html=True)
+
 
 
