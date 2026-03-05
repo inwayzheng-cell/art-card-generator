@@ -25,22 +25,21 @@ def format_value(val):
     return s.replace(" .", ".").replace(". ", ".")
 
 # 1.取得圖片的相對路徑
-icon_path = os.path.join("static", "logo.png")
+LOGO_URL = "https://raw.githubusercontent.com/inwayzheng-cell/art-card-generator/main/static/logo.png"
+
 
 st.set_page_config(
     page_title="作品小卡生成器",
-    page_icon=icon_path, # 使用相對路徑
+    page_icon=LOGO_URL,  # 現在這裡可以用 LOGO_URL 了
     layout="wide"
 )
 
-# 2. 
 st.markdown(f"""
     <head>
         <link rel="shortcut icon" href="{LOGO_URL}">
         <link rel="icon" sizes="192x192" href="{LOGO_URL}">
         <link rel="apple-touch-icon" href="{LOGO_URL}">
-        
-        </head>
+    </head>
     <style>
         #MainMenu {{visibility: hidden;}}
         footer {{visibility: hidden;}}
@@ -145,6 +144,7 @@ if st.session_state.final_pdf_data:
         b64_pdf = base64.b64encode(st.session_state.final_pdf_data).decode('utf-8')
         pdf_display = f'<iframe src="data:application/pdf;base64,{b64_pdf}" width="100%" height="600"></iframe>'
         st.markdown(pdf_display, unsafe_allow_html=True)
+
 
 
 
