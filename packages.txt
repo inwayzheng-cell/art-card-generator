@@ -1,2 +1,3 @@
 qpdf
 libqpdf-dev
+poppler-utils
