@@ -1,3 +1,4 @@
+import base64
 import streamlit as st
 import pandas as pd
 import io, zipfile, os
@@ -9,12 +10,12 @@ import pikepdf
 
 # 1. 自動偵測字型
 FONT_NAME = "Kaiu"
-FONT_PATH = "kaiu.ttf" # 確保 GitHub 倉庫裡有這個檔案
+FONT_PATH = "kaiu.ttf"
 
 if os.path.exists(FONT_PATH):
     pdfmetrics.registerFont(TTFont(FONT_NAME, FONT_PATH))
 else:
-    st.error("⚠️ 找不到 kaiu.ttf 字型檔，請上傳至 GitHub 儲存庫。")
+    st.error("⚠️ 找不到 kaiu.ttf 字型檔，請確保檔案已上傳至 GitHub 儲存庫。")
 
 def format_value(val):
     if pd.isna(val): return ""
@@ -28,12 +29,12 @@ st.title("🎨 作品說明卡網頁生成工具")
 
 with st.sidebar:
     st.header("📏 排版參數")
-    xl = st.number_input("左(往右數字加大,往左數字減小)", value=166.0)
-    xr = st.number_input("右(往右數字加大,往左數字減小)", value=435.0)
+    xl = st.number_input("左欄 X (往右數字加大)", value=166.0)
+    xr = st.number_input("右欄 X (往右數字加大)", value=435.0)
     st.divider()
-    st_sz = st.slider("作品名 字體大小", 10, 30, 19)
-    si_sz = st.slider("大小/年代 字體大小", 10, 30, 15)
-    sa_sz = st.slider("作者 字體大小", 10, 30, 12)
+    st_sz = st.slider("作品名 字體大小", 10, 40, 19)
+    si_sz = st.slider("大小/年代 字體大小", 10, 40, 15)
+    sa_sz = st.slider("作者 字體大小", 10, 40, 12)
     st.divider()
     g1 = st.number_input("作品名 -> 大小年代間距", value=25.0)
     g2 = st.number_input("作品名 -> 作者間距", value=60.0)
@@ -45,12 +46,13 @@ with col1:
 with col2:
     uploaded_pdf = st.file_uploader("2. 上傳 PDF 模板背景", type=["pdf"])
 
-if st.button("🚀 開始批次生成所有 PDF", use_container_width=True):
+if st.button("🚀 開始批次生成並預覽", use_container_width=True):
     if uploaded_excel and uploaded_pdf:
         try:
             df = pd.read_excel(uploaded_excel)
             grouped = df.groupby(df.iloc[:, 1]) # 按作者分組
             zip_buffer = io.BytesIO()
+            last_pdf_data = None  # 用於儲存最後一份 PDF 給預覽使用
             
             with zipfile.ZipFile(zip_buffer, "a") as zip_file:
                 for author_name, group_df in grouped:
@@ -82,10 +84,29 @@ if st.button("🚀 開始批次生成所有 PDF", use_container_width=True):
                                 dst_page.add_underlay(src.pages[0])
                                 dst_page.add_overlay(overlay.pages[0])
                         final_pdf.save(pdf_io)
-                    zip_file.writestr(f"{safe_name}.pdf", pdf_io.getvalue())
+                    
+                    last_pdf_data = pdf_io.getvalue() # 暫存這份 PDF
+                    zip_file.writestr(f"{safe_name}.pdf", last_pdf_data)
             
-            st.success("✅ 生成完畢！")
-            st.download_button("📥 點我下載所有 PDF (ZIP)", zip_buffer.getvalue(), "說明卡產出.zip", "application/zip", use_container_width=True)
+            # --- 介面顯示：成功訊息 & 下載按鈕 ---
+            st.success(f"✅ 生成完畢！已處理 {len(grouped)} 位作者的資料。")
+            
+            st.download_button(
+                label="📥 點我下載所有 PDF (ZIP)",
+                data=zip_buffer.getvalue(),
+                file_name="大墩說明卡產出.zip",
+                mime="application/zip",
+                use_container_width=True
+            )
+
+            # --- 介面顯示：PDF 預覽區 ---
+            if last_pdf_data:
+                st.divider()
+                st.subheader("👁️ 排版成果預覽 (範例顯示)")
+                base64_pdf = base64.b64encode(last_pdf_data).decode('utf-8')
+                pdf_display = f'<iframe src="data:application/pdf;base64,{base64_pdf}" width="100%" height="800" type="application/pdf"></iframe>'
+                st.markdown(pdf_display, unsafe_allow_html=True)
+
         except Exception as e:
             st.error(f"發生錯誤: {e}")
     else:
