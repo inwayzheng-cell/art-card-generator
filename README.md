@@ -31,4 +31,3 @@
 3. 部署完成後即可透過瀏覽器在任何裝置上使用。
 
 ---
-*Created by [Your Name/GitHub ID]*
