@@ -14,7 +14,7 @@ FONT_NAME = "msjhbd"
 FONT_PATH = "msjhbd.ttc"
 
 def download_font():
-    url = "https://github.com/inwayzheng-cell/art-card-generator/raw/main/kaiu.ttf"
+    url = "https://github.com/inwayzheng-cell/art-card-generator/raw/main/msjhbd.ttc"
     if not os.path.exists(FONT_PATH) or os.path.getsize(FONT_PATH) < 1000:
         with st.spinner("正在載入字體檔，請稍候..."):
             response = requests.get(url)
@@ -30,7 +30,7 @@ except Exception as e:
 if os.path.exists(FONT_PATH):
     pdfmetrics.registerFont(TTFont(FONT_NAME, FONT_PATH))
 else:
-    st.error("⚠️ 找不到 kaiu.ttf 字型檔，請確保檔案已上傳至 GitHub。")
+    st.error("⚠️ 找不到 msjhbd.ttc 字型檔，請確保檔案已上傳至 GitHub。")
 
 def format_value(val):
     if pd.isna(val): return ""
@@ -200,6 +200,7 @@ if st.session_state.final_pdf_data:
         b64_pdf = base64.b64encode(st.session_state.final_pdf_data).decode('utf-8')
         pdf_display = f'<iframe src="data:application/pdf;base64,{b64_pdf}" width="100%" height="600"></iframe>'
         st.markdown(pdf_display, unsafe_allow_html=True)
+
 
 
 
