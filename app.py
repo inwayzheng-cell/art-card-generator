@@ -28,38 +28,32 @@ LOGO_URL = "https://raw.githubusercontent.com/inwayzheng-cell/art-card-generator
 
 import streamlit as st
 
-# 1. 基礎頁面配置
+# --- 1. 基礎頁面配置 ---
 st.set_page_config(
     page_title="Art Card Generator",
     layout="wide",
     page_icon="🎨"
 )
 
-# 2. 注入 PWA 與外觀修正 
+# --- 2. 注入 PWA 與外觀修正 (強制亮色模式避免字體過淡) ---
 st.markdown(
     """
     <style>
-        /* 1. 強制背景白色 */
         html, body, [data-testid="stAppViewContainer"], .main {
             background-color: white !important;
         }
-
-        /* 2. 強制所有標題與文字變回黑色，解決深色模式文字過淡的問題 */
         h1, h2, h3, p, span, label, .stMarkdown {
-            color: #31333F !important; /* Streamlit 標準深灰色 */
-        }
-
-        /* 3. 修正側邊欄的文字顏色 (如果你有用到側邊欄) */
-        [data-testid="stSidebar"] {
-            background-color: #f0f2f6 !important; /* 淡淡的灰色背景 */
-        }
-        [data-testid="stSidebar"] * {
             color: #31333F !important;
         }
     </style>
+    <head>
+        <link rel="manifest" href="./manifest.json">
+        <link rel="icon" sizes="512x512" href="./static/logo.png">
+        <link rel="apple-touch-icon" href="./static/logo.png">
+        <meta name="theme-color" content="#ffffff">
+    </head>
     """,
     unsafe_allow_html=True
-)
 )
 
 st.title("製作小卡")
