@@ -14,18 +14,30 @@ FONT_NAME = "msjhbd"
 FONT_PATH = "msjhbd.ttc"
 
 def download_font():
+    # 使用正確的 Raw 連結
     url = "https://github.com/inwayzheng-cell/art-card-generator/raw/main/msjhbd.ttc"
-    if not os.path.exists(FONT_PATH) or os.path.getsize(FONT_PATH) < 1000:
-        with st.spinner("正在載入字體檔，請稍候..."):
-            response = requests.get(url)
-            with open(FONT_PATH, "wb") as f:
-                f.write(response.content)
+    
+    # 如果檔案不存在，或者檔案太小 (小於 100KB 通常就是 LFS 指標檔)，就重新下載
+    if not os.path.exists(FONT_PATH) or os.path.getsize(FONT_PATH) < 100000:
+        with st.spinner("正在從雲端載入微軟正黑體 (約 15MB)，請稍候..."):
+            try:
+                response = requests.get(url, timeout=30)
+                response.raise_for_status() # 確保下載成功
+                with open(FONT_PATH, "wb") as f:
+                    f.write(response.content)
+                st.success("字體下載完成！")
+            except Exception as e:
+                st.error(f"下載字體時發生網路錯誤: {e}")
 
+# 執行下載
+download_font()
+
+# 註冊字體
 try:
-    download_font()
+    # 注意：針對 .ttc 檔，ReportLab 有時需要指定 subfontIndex
     pdfmetrics.registerFont(TTFont(FONT_NAME, FONT_PATH))
 except Exception as e:
-    st.error(f"⚠️ 字體載入失敗: {e}")
+    st.error(f"⚠️ 字體註冊失敗: {e}")
 
 if os.path.exists(FONT_PATH):
     pdfmetrics.registerFont(TTFont(FONT_NAME, FONT_PATH))
@@ -200,6 +212,7 @@ if st.session_state.final_pdf_data:
         b64_pdf = base64.b64encode(st.session_state.final_pdf_data).decode('utf-8')
         pdf_display = f'<iframe src="data:application/pdf;base64,{b64_pdf}" width="100%" height="600"></iframe>'
         st.markdown(pdf_display, unsafe_allow_html=True)
+
 
 
 
