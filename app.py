@@ -54,37 +54,38 @@ st.set_page_config(
 st.markdown(
     """
     <style>
-        /* 1. 強制背景與全域文字 */
+        /* 1. 全域背景與文字 */
         html, body, [data-testid="stAppViewContainer"], .main {
             background-color: white !important;
             color: #31333F !important;
         }
 
-        /* 2. 針對所有標題、一般文字、以及標籤 */
-        h1, h2, h3, p, span, label, small {
+        /* 2. 強力修正所有按鈕內部的文字顏色 */
+        /* 針對 "開始生成" 這種全寬按鈕或一般按鈕 */
+        button, p, span, label {
             color: #31333F !important;
         }
 
-        /* 3. 強力修正上傳框 (File Uploader) 內部的所有字 */
-        /* 包括：拖放提示、檔案限制說明、按鈕文字 */
+        /* 3. 針對 Streamlit 的主要按鈕 (Primary Button) */
+        div.stButton > button:first-child {
+            background-color: #f0f2f6 !important; /* 淺灰色按鈕背景 */
+            color: #31333F !important;           /* 深灰色文字 */
+            border: 1px solid #d1d1d1 !important;
+            font-weight: bold !important;
+        }
+        
+        /* 4. 針對上傳框內部文字的最終打擊 */
         [data-testid="stFileUploader"] * {
             color: #31333F !important;
         }
-        
-        /* 修正上傳框的背景色，讓它跟全白背景有區隔但文字清晰 */
         [data-testid="stFileUploader"] section {
             background-color: #f0f2f6 !important;
-            border: 2px dashed #bdc3c7 !important;
         }
 
-        /* 4. 針對側邊欄文字 */
-        [data-testid="stSidebar"] [data-testid="stMarkdownContainer"] p {
-            color: #31333F !important;
-        }
-        
-        /* 5. 修正數字輸入框與滑桿的標籤文字 */
-        .stNumberInput label, .stSlider label {
-            color: #31333F !important;
+        /* 5. 下載按鈕 (Download Button) 的修正 */
+        [data-testid="stDownloadButton"] > button {
+            background-color: #007bff !important; /* 藍色背景(顯眼點) */
+            color: white !important;              /* 這裡改白色，因為藍底白字才好看 */
         }
     </style>
     
