@@ -10,8 +10,8 @@ import pikepdf
 from pdf2image import convert_from_bytes
 import requests
 
-FONT_NAME = "Kaiu"
-FONT_PATH = "kaiu.ttf"
+FONT_NAME = "msjhbd"
+FONT_PATH = "msjhbd.ttc"
 
 def download_font():
     url = "https://github.com/inwayzheng-cell/art-card-generator/raw/main/kaiu.ttf"
@@ -200,6 +200,7 @@ if st.session_state.final_pdf_data:
         b64_pdf = base64.b64encode(st.session_state.final_pdf_data).decode('utf-8')
         pdf_display = f'<iframe src="data:application/pdf;base64,{b64_pdf}" width="100%" height="600"></iframe>'
         st.markdown(pdf_display, unsafe_allow_html=True)
+
 
 
 
