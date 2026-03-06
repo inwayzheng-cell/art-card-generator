@@ -50,58 +50,54 @@ st.set_page_config(
     page_icon="🎨"
 )
 
-# --- 2. 注入 PWA 與外觀修正 (強制亮色模式避免字體過淡) ---
+# --- 2. 注入 PWA  ---
 st.markdown(
     """
     <style>
-        /* 1. 全域背景與文字 */
+        /* 1. 全域背景強制純白 */
         html, body, [data-testid="stAppViewContainer"], .main {
             background-color: white !important;
-            color: #31333F !important;
         }
 
-        /* 2. 強力修正所有按鈕內部的文字顏色 */
-        /* 針對 "開始生成" 這種全寬按鈕或一般按鈕 */
-        button, p, span, label {
-            color: #31333F !important;
-        }
-
-        /* 3. 針對 Streamlit 的主要按鈕 (Primary Button) */
-        div.stButton > button:first-child {
-            background-color: #f0f2f6 !important; /* 淺灰色按鈕背景 */
-            color: #000000 !important;           /* 深灰色文字 */
-            border: 1px solid #d1d1d1 !important;
-            font-weight: bold !important;
-        }
-        
-        /* 4. 針對上傳框內部文字的最終打擊 - 加強版 */
-        [data-testid="stFileUploader"] * {
-            color: #000000 !important; /* 直接強制用全黑，避免深灰色還是太淡 */
-        }
-        
-        [data-testid="stFileUploader"] section {
-            background-color: #f0f2f6 !important; /* 稍微加深背景灰色，讓白色文字在對比下失效 */
-            border: 2px dashed #6c757d !important; /* 邊框加深 */
-        }
-
-        /* 特別針對上傳框內的「小字」和「按鈕文字」 */
-        [data-testid="stFileUploader"] label, 
-        [data-testid="stFileUploader"] small, 
-        [data-testid="stFileUploader"] button div {
-            color: #ADFF2F !important;
-            font-weight: 600 !important; /* 加粗字體，讓它更顯眼 */
-        }
-
-        /* 解決有些手機瀏覽器會對 input 標籤套用預設淺色 */
-        [data-testid="stFileUploader"] input {
+        /* 2. 標題與標籤字體加黑 */
+        h1, h2, h3, p, span, label {
             color: #000000 !important;
         }
 
-        /* 5. 下載按鈕 (Download Button) 的修正 */
-        [data-testid="stDownloadButton"] > button {
-            background-color: #007bff !important; /* 藍色背景(顯眼點) */
-            color: white !important;              /* 這裡改白色，因為藍底白字才好看 */
+        /* 3. 上傳框區塊修正 */
+        [data-testid="stFileUploader"] section {
+            background-color: #f8f9fa !important;
+            border: 1px dashed #adb5bd !important;
         }
+        
+        /* 4. 強力修正「Browse files」按鈕 (截圖中黑掉的部分) */
+        [data-testid="stFileUploader"] button {
+            background-color: #f0f2f6 !important; /* 改為淺灰色背景 */
+            color: #000000 !important;           /* 強制黑字 */
+            border: 1px solid #d1d1d1 !important;
+            opacity: 1 !important;               /* 防止被系統淡化 */
+        }
+        
+        /* 針對按鈕內的文字 span */
+        [data-testid="stFileUploader"] button div[data-testid="stMarkdownContainer"] p {
+            color: #000000 !important;
+            font-weight: bold !important;
+        }
+
+        /* 5. 強力修正「🚀 開始生成 PDF 並預覽」按鈕 */
+        /* 鎖定所有的 button 標籤 */
+        button[kind="secondaryFormSubmit"], button {
+            background-color: #007bff !important; /* 改成深藍色，對比最強 */
+            color: #ffffff !important;           /* 配白字最清晰 */
+            border-radius: 8px !important;
+            opacity: 1 !important;
+        }
+        
+        /* 確保按鈕內的文字不變色 */
+        button p, button span {
+            color: inherit !important; 
+        }
+
     </style>
     
     <head>
