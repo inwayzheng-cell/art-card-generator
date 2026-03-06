@@ -74,12 +74,27 @@ st.markdown(
             font-weight: bold !important;
         }
         
-        /* 4. 針對上傳框內部文字的最終打擊 */
+        /* 4. 針對上傳框內部文字的最終打擊 - 加強版 */
         [data-testid="stFileUploader"] * {
-            color: #31333F !important;
+            color: #000000 !important; /* 直接強制用全黑，避免深灰色還是太淡 */
         }
+        
         [data-testid="stFileUploader"] section {
-            background-color: #f0f2f6 !important;
+            background-color: #e9ecef !important; /* 稍微加深背景灰色，讓白色文字在對比下失效 */
+            border: 2px dashed #6c757d !important; /* 邊框加深 */
+        }
+
+        /* 特別針對上傳框內的「小字」和「按鈕文字」 */
+        [data-testid="stFileUploader"] label, 
+        [data-testid="stFileUploader"] small, 
+        [data-testid="stFileUploader"] button div {
+            color: #000000 !important;
+            font-weight: 600 !important; /* 加粗字體，讓它更顯眼 */
+        }
+
+        /* 解決有些手機瀏覽器會對 input 標籤套用預設淺色 */
+        [data-testid="stFileUploader"] input {
+            color: #000000 !important;
         }
 
         /* 5. 下載按鈕 (Download Button) 的修正 */
