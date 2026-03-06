@@ -35,30 +35,34 @@ st.set_page_config(
     page_icon="🎨"
 )
 
-# 2. 注入 PWA 與外觀修正 (解決黑畫面與圖示問題)
-# 確保 manifest.json 在根目錄，logo.png 在 static/
+# 2. 注入 PWA 與外觀修正 
 st.markdown(
     """
     <style>
-        /* 強制背景白色，解決 iOS/Android 啟動時的黑屏問題 */
+        /* 1. 強制背景白色 */
         html, body, [data-testid="stAppViewContainer"], .main {
             background-color: white !important;
         }
+
+        /* 2. 強制所有標題與文字變回黑色，解決深色模式文字過淡的問題 */
+        h1, h2, h3, p, span, label, .stMarkdown {
+            color: #31333F !important; /* Streamlit 標準深灰色 */
+        }
+
+        /* 3. 修正側邊欄的文字顏色 (如果你有用到側邊欄) */
+        [data-testid="stSidebar"] {
+            background-color: #f0f2f6 !important; /* 淡淡的灰色背景 */
+        }
+        [data-testid="stSidebar"] * {
+            color: #31333F !important;
+        }
     </style>
-    
-    <head>
-        <link rel="manifest" href="./manifest.json">
-        <link rel="icon" sizes="512x512" href="./static/logo.png">
-        <link rel="apple-touch-icon" href="./static/logo.png">
-        <meta name="theme-color" content="#ffffff">
-        <meta name="apple-mobile-web-app-capable" content="yes">
-        <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    </head>
     """,
     unsafe_allow_html=True
 )
+)
 
-st.title("小卡生成工具")
+st.title("製作小卡")
 
 with st.sidebar:
     st.header("📏 排版")
@@ -129,7 +133,7 @@ if st.button("🚀 開始生成 PDF 並預覽", use_container_width=True):
         except Exception as e:
             st.error(f"發生錯誤: {e}")
     else:
-        st.warning("⚠️ 請先上傳 Excel 與 PDF 模板。")
+        st.warning("⚠ 請先上傳 Excel 與 PDF 模板。")
 
 
 if st.session_state.final_pdf_data:
@@ -137,15 +141,15 @@ if st.session_state.final_pdf_data:
     
     
     st.download_button(
-        label="📥 下載完整作品說明卡 (PDF)",
+        label="📥 下載作品小卡 (PDF)",
         data=st.session_state.final_pdf_data,
-        file_name="作品說明卡總表.pdf",
+        file_name="小卡總表.pdf",
         mime="application/pdf",
         use_container_width=True
     )
 
     
-    st.subheader("👁️ 即時預覽 (第一頁)")
+    st.subheader("👁️即時預覽 (第一頁)")
     try:
         
         images = convert_from_bytes(st.session_state.final_pdf_data, first_page=1, last_page=1)
