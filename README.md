@@ -37,7 +37,8 @@
 
 ## 線上存取
 可以透過以下連結直接在線上使用此工具：
-- https://art-card-generator-gaggshe93vfd3bk3vnzje8.streamlit.app/
+- https://huggingface.co/spaces/WenzhenG107/art-card-generator
+
 
 
 
