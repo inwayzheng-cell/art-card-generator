@@ -47,6 +47,8 @@ pinned: false
 ## 線上存取
 可以透過以下連結直接在線上使用此工具：
 - https://huggingface.co/spaces/WenzhenG107/art-card-generator
+- https://art-card-generator-gaggshe93vfd3bk3vnzje8.streamlit.app/
+
 
 
 
