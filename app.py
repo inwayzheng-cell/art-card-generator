@@ -26,24 +26,37 @@ def format_value(val):
 LOGO_URL = "https://raw.githubusercontent.com/inwayzheng-cell/art-card-generator/main/static/logo.png"
 
 
+import streamlit as st
+
+# 1. 基礎頁面配置
 st.set_page_config(
-    page_title="作品小卡生成器",
-    page_icon=LOGO_URL, 
-    layout="wide"
+    page_title="Art Card Generator",
+    layout="wide",
+    page_icon="🎨"
 )
 
-st.markdown(f"""
-    <link rel="manifest" href="https://raw.githubusercontent.com/inwayzheng-cell/art-card-generator/main/manifest.json">
-""", unsafe_allow_html=True)
-
-st.markdown(f"""
+# 2. 注入 PWA 與外觀修正 (解決黑畫面與圖示問題)
+# 確保 manifest.json 在根目錄，logo.png 在 static/
+st.markdown(
+    """
+    <style>
+        /* 強制背景白色，解決 iOS/Android 啟動時的黑屏問題 */
+        html, body, [data-testid="stAppViewContainer"], .main {
+            background-color: white !important;
+        }
+    </style>
+    
     <head>
         <link rel="manifest" href="./manifest.json">
-        <link rel="shortcut icon" href="./static/logo.png">
         <link rel="icon" sizes="512x512" href="./static/logo.png">
         <link rel="apple-touch-icon" href="./static/logo.png">
+        <meta name="theme-color" content="#ffffff">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="default">
     </head>
-""", unsafe_allow_html=True)
+    """,
+    unsafe_allow_html=True
+)
 
 st.title("小卡生成工具")
 
