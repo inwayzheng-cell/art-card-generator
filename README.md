@@ -1,3 +1,12 @@
+---
+title: Art Card Generator
+emoji: 🎨
+colorFrom: blue
+colorTo: indigo
+sdk: docker
+pinned: false
+---
+
 # 🎨 作品說明卡批次生成器 (Art Card Generator)
 
 [![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://share.streamlit.io/) 
@@ -38,6 +47,7 @@
 ## 線上存取
 可以透過以下連結直接在線上使用此工具：
 - https://huggingface.co/spaces/WenzhenG107/art-card-generator
+
 
 
 
