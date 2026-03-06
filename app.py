@@ -33,6 +33,10 @@ st.set_page_config(
 )
 
 st.markdown(f"""
+    <link rel="manifest" href="https://raw.githubusercontent.com/inwayzheng-cell/art-card-generator/main/manifest.json">
+""", unsafe_allow_html=True)
+
+st.markdown(f"""
     <head>
         <link rel="shortcut icon" href="{LOGO_URL}">
         <link rel="icon" sizes="192x192" href="{LOGO_URL}">
@@ -142,6 +146,7 @@ if st.session_state.final_pdf_data:
         b64_pdf = base64.b64encode(st.session_state.final_pdf_data).decode('utf-8')
         pdf_display = f'<iframe src="data:application/pdf;base64,{b64_pdf}" width="100%" height="600"></iframe>'
         st.markdown(pdf_display, unsafe_allow_html=True)
+
 
 
 
