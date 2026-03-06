@@ -54,54 +54,48 @@ st.set_page_config(
 st.markdown(
     """
     <style>
-        /* 1. 強制 iPhone 背景純白，確保元件容器也是白色 */
-        html, body, [data-testid="stAppViewContainer"], .main, .stApp {
-            background-color: white !important;
+        /* 1. 解決標題消失問題 (截圖頂部的製作小卡) */
+        h1, h2, h3, .stMarkdown p {
+            color: #000000 !important;
+            -webkit-text-fill-color: #000000 !important;
+            opacity: 1 !important;
         }
 
-        /* 2. 側邊欄與參數區塊背景與字體 */
-        [data-testid="stSidebar"], [data-testid="stSidebar"] section {
-            background-color: #f8f9fb !important; /* 淺灰色底，區分主畫面 */
+        /* 2. 徹底修正上傳框 (截圖中黑壓壓的區塊) */
+        [data-testid="stFileUploader"] {
+            background-color: #ffffff !important; /* 強制框內背景白色 */
+            border-radius: 10px;
+            padding: 10px;
         }
         
-        /* 強制側邊欄內所有文字變純黑 */
-        [data-testid="stSidebar"] * {
+        /* 修正上傳框內部的「Browse files」按鈕 */
+        [data-testid="stFileUploader"] button {
+            background-color: #007bff !important; /* 改成藍色背景 */
+            color: #ffffff !important;           /* 白色文字 */
+            -webkit-text-fill-color: #ffffff !important;
+            opacity: 1 !important;
+            border: none !important;
+        }
+
+        /* 3. 修正截圖中「Drag and drop file here」字體太淡的問題 */
+        [data-testid="stFileUploader"] section div {
             color: #000000 !important;
             -webkit-text-fill-color: #000000 !important;
         }
 
-        /* 3. 修正數字輸入框 (Number Input) 變成黑糊糊的問題 */
-        div[data-testid="stNumberInput"] input {
-            background-color: white !important; /* 輸入框內部強制白色 */
-            color: black !important;           /* 文字強制黑色 */
-            -webkit-text-fill-color: black !important;
-            border: 1px solid #ced4da !important;
-            opacity: 1 !important;
+        /* 4. 側邊欄與參數調整區 (排版參數黑糊糊修正) */
+        [data-testid="stSidebar"] {
+            background-color: #ffffff !important;
         }
-
-        /* 4. 修正滑桿 (Slider) 的標籤文字 */
-        div[data-testid="stSlider"] label p {
-            color: black !important;
-            font-weight: bold !important;
-        }
-
-        /* 5. 針對 iPhone 的按鈕點擊修正 (防止點不到) */
-        button, .stNumberInput, .stSlider {
-            pointer-events: auto !important;
-        }
-
-        /* 6. 上傳框區塊字體再加黑 */
-        [data-testid="stFileUploader"] * {
-            color: black !important;
-            -webkit-text-fill-color: black !important;
+        [data-testid="stSidebar"] * {
+            color: #000000 !important;
+            -webkit-text-fill-color: #000000 !important;
         }
         
-        /* 藍色按鈕保持清晰 */
-        div.stButton > button {
-            background-color: #007bff !important;
-            color: white !important;
-            -webkit-text-fill-color: white !important;
-            opacity: 1 !important;
+        /* 5. 確保輸入框是白底黑字 */
+        input {
+            background-color: #ffffff !important;
+            color: #000000 !important;
         }
     </style>
     """,
@@ -206,6 +200,7 @@ if st.session_state.final_pdf_data:
         b64_pdf = base64.b64encode(st.session_state.final_pdf_data).decode('utf-8')
         pdf_display = f'<iframe src="data:application/pdf;base64,{b64_pdf}" width="100%" height="600"></iframe>'
         st.markdown(pdf_display, unsafe_allow_html=True)
+
 
 
 
