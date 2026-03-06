@@ -38,20 +38,17 @@ st.markdown(f"""
 
 st.markdown(f"""
     <head>
-        <link rel="shortcut icon" href="{LOGO_URL}">
-        <link rel="icon" sizes="192x192" href="{LOGO_URL}">
-        <link rel="apple-touch-icon" href="{LOGO_URL}">
+        <link rel="manifest" href="./manifest.json">
+        <link rel="shortcut icon" href="./static/logo.png">
+        <link rel="icon" sizes="512x512" href="./static/logo.png">
+        <link rel="apple-touch-icon" href="./static/logo.png">
     </head>
-    <style>
-        #MainMenu {{visibility: hidden;}}
-        footer {{visibility: hidden;}}
-    </style>
 """, unsafe_allow_html=True)
 
-st.title("🎨作品小卡生成工具")
+st.title("小卡生成工具")
 
 with st.sidebar:
-    st.header("📏 排版參數")
+    st.header("📏 排版")
     xl = st.number_input("左欄(往右偏加大,往左偏減小)", value=166)
     xr = st.number_input("右欄(往右偏加大,往左偏減小)", value=435)
     st.divider()
