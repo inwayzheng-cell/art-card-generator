@@ -121,11 +121,11 @@ with st.sidebar:
     xl = st.number_input("左欄(往右偏加大,往左偏減小)", value=166)
     xr = st.number_input("右欄(往右偏加大,往左偏減小)", value=435)
     st.divider()
-    st_sz = st.slider("作品名 字體大小", 10, 40, 25)
-    si_sz = st.slider("大小/年代 字體大小", 10, 40, 15)
-    sa_sz = st.slider("作者 字體大小", 10, 40, 12)
+    st_sz = st.slider("作品名 字體大小", 15, 25, 18.5)
+    si_sz = st.slider("大小/年代 字體大小", 10, 20, 14.5)
+    sa_sz = st.slider("作者 字體大小", 10, 20, 16)
     st.divider()
-    g1 = st.number_input("作品名 -> 大小年代間距", value=25)
+    g1 = st.number_input("作品名 -> 大小年代間距", value=30)
     g2 = st.number_input("作品名 -> 作者間距", value=60)
 
 
@@ -212,6 +212,7 @@ if st.session_state.final_pdf_data:
         b64_pdf = base64.b64encode(st.session_state.final_pdf_data).decode('utf-8')
         pdf_display = f'<iframe src="data:application/pdf;base64,{b64_pdf}" width="100%" height="600"></iframe>'
         st.markdown(pdf_display, unsafe_allow_html=True)
+
 
 
 
