@@ -118,15 +118,15 @@ st.title("製作小卡")
 
 with st.sidebar:
     st.header("📏 排版")
-    xl = st.number_input("左欄(往右偏加大,往左偏減小)", value=166)
-    xr = st.number_input("右欄(往右偏加大,往左偏減小)", value=435)
+    xl = st.number_input("左欄(往右偏加大,往左偏減小)", value=166.0)
+    xr = st.number_input("右欄(往右偏加大,往左偏減小)", value=435.0)
     st.divider()
-    st_sz = st.slider("作品名 字體大小", 15, 25, 18.5)
-    si_sz = st.slider("大小/年代 字體大小", 10, 20, 14.5)
-    sa_sz = st.slider("作者 字體大小", 10, 20, 16)
+    st_sz = st.slider("作品名 字體大小", 15.0, 25.0, 18.5)
+    si_sz = st.slider("大小/年代 字體大小", 10.0, 20.0, 14.5)
+    sa_sz = st.slider("作者 字體大小", 10.0, 20.0, 16.0)
     st.divider()
-    g1 = st.number_input("作品名 -> 大小年代間距", value=30)
-    g2 = st.number_input("作品名 -> 作者間距", value=60)
+    g1 = st.number_input("作品名 -> 大小年代間距", value=30.0)
+    g2 = st.number_input("作品名 -> 作者間距", value=60.0)
 
 
 if "final_pdf_data" not in st.session_state:
@@ -159,7 +159,7 @@ if st.button("🚀 開始生成 PDF 並預覽", use_container_width=True):
                             row = df.iloc[idx]
                             
                             cx = xl if i < 5 else xr
-                            cy = [774, 610.5, 445.5, 282.5, 117.5][i % 5]
+                            cy = [774.0, 610.5, 445.5, 282.5, 117.5][i % 5]
                             
                             
                             can.setFont(FONT_NAME, st_sz)
@@ -212,6 +212,7 @@ if st.session_state.final_pdf_data:
         b64_pdf = base64.b64encode(st.session_state.final_pdf_data).decode('utf-8')
         pdf_display = f'<iframe src="data:application/pdf;base64,{b64_pdf}" width="100%" height="600"></iframe>'
         st.markdown(pdf_display, unsafe_allow_html=True)
+
 
 
 
