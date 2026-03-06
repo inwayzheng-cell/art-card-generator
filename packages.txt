@@ -1,3 +1,6 @@
 qpdf
 libqpdf-dev
 poppler-utils
+libpoppler-cpp-dev
+pkg-config
+python3-dev
