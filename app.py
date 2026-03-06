@@ -8,9 +8,24 @@ from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.pdfbase import pdfmetrics
 import pikepdf
 from pdf2image import convert_from_bytes
+import requests
 
 FONT_NAME = "Kaiu"
 FONT_PATH = "kaiu.ttf"
+
+def download_font():
+    url = "https://github.com/inwayzheng-cell/art-card-generator/raw/main/kaiu.ttf"
+    if not os.path.exists(FONT_PATH) or os.path.getsize(FONT_PATH) < 1000:
+        with st.spinner("正在載入字體檔，請稍候..."):
+            response = requests.get(url)
+            with open(FONT_PATH, "wb") as f:
+                f.write(response.content)
+
+try:
+    download_font()
+    pdfmetrics.registerFont(TTFont(FONT_NAME, FONT_PATH))
+except Exception as e:
+    st.error(f"⚠️ 字體載入失敗: {e}")
 
 if os.path.exists(FONT_PATH):
     pdfmetrics.registerFont(TTFont(FONT_NAME, FONT_PATH))
