@@ -54,43 +54,37 @@ st.set_page_config(
 st.markdown(
     """
     <style>
-        /* 1. 全域背景與文字顏色強制修正 */
+        /* 1. 強制背景與全域文字 */
         html, body, [data-testid="stAppViewContainer"], .main {
             background-color: white !important;
             color: #31333F !important;
         }
 
-        /* 2. 強制所有標題與一般文字為深灰色 */
-        h1, h2, h3, p, span, label, .stMarkdown {
+        /* 2. 針對所有標題、一般文字、以及標籤 */
+        h1, h2, h3, p, span, label, small {
             color: #31333F !important;
         }
 
-        /* 3. 修正上傳按鈕 (File Uploader) 的外觀 */
-        [data-testid="stFileUploader"] section {
-            background-color: #f0f2f6 !important; /* 淺灰色背景 */
-            border: 1px dashed #c0c0c0 !important;
+        /* 3. 強力修正上傳框 (File Uploader) 內部的所有字 */
+        /* 包括：拖放提示、檔案限制說明、按鈕文字 */
+        [data-testid="stFileUploader"] * {
             color: #31333F !important;
         }
         
-        /* 修正上傳按鈕內的文字與小圖示 */
-        [data-testid="stFileUploader"] label, 
-        [data-testid="stFileUploader"] div {
-            color: #31333F !important;
+        /* 修正上傳框的背景色，讓它跟全白背景有區隔但文字清晰 */
+        [data-testid="stFileUploader"] section {
+            background-color: #f0f2f6 !important;
+            border: 2px dashed #bdc3c7 !important;
         }
 
-        /* 4. 修正側邊欄外觀 */
-        [data-testid="stSidebar"] {
-            background-color: #f8f9fb !important;
-        }
-        [data-testid="stSidebar"] * {
+        /* 4. 針對側邊欄文字 */
+        [data-testid="stSidebar"] [data-testid="stMarkdownContainer"] p {
             color: #31333F !important;
         }
-
-        /* 5. 修正一般按鈕 (例如: 開始生成) */
-        button[kind="secondaryFormSubmit"], button[kind="primary"] {
-            background-color: #ffffff !important;
+        
+        /* 5. 修正數字輸入框與滑桿的標籤文字 */
+        .stNumberInput label, .stSlider label {
             color: #31333F !important;
-            border: 1px solid #d1d1d1 !important;
         }
     </style>
     
