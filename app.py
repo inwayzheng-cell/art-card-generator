@@ -88,7 +88,7 @@ st.markdown(
         [data-testid="stFileUploader"] label, 
         [data-testid="stFileUploader"] small, 
         [data-testid="stFileUploader"] button div {
-            color: #000000 !important;
+            color: #ADFF2F !important;
             font-weight: 600 !important; /* 加粗字體，讓它更顯眼 */
         }
 
