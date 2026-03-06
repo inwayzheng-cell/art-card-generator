@@ -168,7 +168,7 @@ if st.button("🚀 開始生成 PDF 並預覽", use_container_width=True):
                 
                 final_pdf.save(pdf_io)
                 st.session_state.final_pdf_data = pdf_io.getvalue()
-                st.success(f"✅ 生成成功！共 {len(df)} 張。")
+                st.success(f"✅ 生成成功！共{len(df)}小張。")
                 
         except Exception as e:
             st.error(f"發生錯誤: {e}")
@@ -200,6 +200,7 @@ if st.session_state.final_pdf_data:
         b64_pdf = base64.b64encode(st.session_state.final_pdf_data).decode('utf-8')
         pdf_display = f'<iframe src="data:application/pdf;base64,{b64_pdf}" width="100%" height="600"></iframe>'
         st.markdown(pdf_display, unsafe_allow_html=True)
+
 
 
 
