@@ -159,7 +159,7 @@ if st.button("🚀 開始生成 PDF 並預覽", use_container_width=True):
                             row = df.iloc[idx]
                             
                             cx = xl if i < 5 else xr
-                            cy = [765.0, 601.5, 436.5, 273.5, 108.5][i % 5]
+                            cy = [774, 610.5, 445.5, 282.5, 117.5][i % 5]
                             
                             
                             can.setFont(FONT_NAME, st_sz)
@@ -212,6 +212,7 @@ if st.session_state.final_pdf_data:
         b64_pdf = base64.b64encode(st.session_state.final_pdf_data).decode('utf-8')
         pdf_display = f'<iframe src="data:application/pdf;base64,{b64_pdf}" width="100%" height="600"></iframe>'
         st.markdown(pdf_display, unsafe_allow_html=True)
+
 
 
 
