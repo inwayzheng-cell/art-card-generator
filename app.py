@@ -76,11 +76,11 @@ st.markdown(
         
         /* 4. 針對上傳框內部文字的最終打擊 - 加強版 */
         [data-testid="stFileUploader"] * {
-            color: #f0f2f6 !important; /* 直接強制用全黑，避免深灰色還是太淡 */
+            color: #000000 !important; /* 直接強制用全黑，避免深灰色還是太淡 */
         }
         
         [data-testid="stFileUploader"] section {
-            background-color: #000000 !important; /* 稍微加深背景灰色，讓白色文字在對比下失效 */
+            background-color: #f0f2f6 !important; /* 稍微加深背景灰色，讓白色文字在對比下失效 */
             border: 2px dashed #6c757d !important; /* 邊框加深 */
         }
 
