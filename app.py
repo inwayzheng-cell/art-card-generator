@@ -54,58 +54,56 @@ st.set_page_config(
 st.markdown(
     """
     <style>
-        /* 1. 全域背景強制純白 */
-        html, body, [data-testid="stAppViewContainer"], .main {
+        /* 1. 強制 iPhone 背景純白，確保元件容器也是白色 */
+        html, body, [data-testid="stAppViewContainer"], .main, .stApp {
             background-color: white !important;
         }
 
-        /* 2. 標題與標籤字體加黑 */
-        h1, h2, h3, p, span, label {
+        /* 2. 側邊欄與參數區塊背景與字體 */
+        [data-testid="stSidebar"], [data-testid="stSidebar"] section {
+            background-color: #f8f9fb !important; /* 淺灰色底，區分主畫面 */
+        }
+        
+        /* 強制側邊欄內所有文字變純黑 */
+        [data-testid="stSidebar"] * {
             color: #000000 !important;
+            -webkit-text-fill-color: #000000 !important;
         }
 
-        /* 3. 上傳框區塊修正 */
-        [data-testid="stFileUploader"] section {
-            background-color: #f8f9fa !important;
-            border: 1px dashed #adb5bd !important;
+        /* 3. 修正數字輸入框 (Number Input) 變成黑糊糊的問題 */
+        div[data-testid="stNumberInput"] input {
+            background-color: white !important; /* 輸入框內部強制白色 */
+            color: black !important;           /* 文字強制黑色 */
+            -webkit-text-fill-color: black !important;
+            border: 1px solid #ced4da !important;
+            opacity: 1 !important;
         }
-        
-        /* 4. 強力修正「Browse files」按鈕 (截圖中黑掉的部分) */
-        [data-testid="stFileUploader"] button {
-            background-color: #f0f2f6 !important; /* 改為淺灰色背景 */
-            color: #000000 !important;           /* 強制黑字 */
-            border: 1px solid #d1d1d1 !important;
-            opacity: 1 !important;               /* 防止被系統淡化 */
-        }
-        
-        /* 針對按鈕內的文字 span */
-        [data-testid="stFileUploader"] button div[data-testid="stMarkdownContainer"] p {
-            color: #000000 !important;
+
+        /* 4. 修正滑桿 (Slider) 的標籤文字 */
+        div[data-testid="stSlider"] label p {
+            color: black !important;
             font-weight: bold !important;
         }
 
-        /* 5. 強力修正「🚀 開始生成 PDF 並預覽」按鈕 */
-        /* 鎖定所有的 button 標籤 */
-        button[kind="secondaryFormSubmit"], button {
-            background-color: #007bff !important; /* 改成深藍色，對比最強 */
-            color: #ffffff !important;           /* 配白字最清晰 */
-            border-radius: 8px !important;
-            opacity: 1 !important;
-        }
-        
-        /* 確保按鈕內的文字不變色 */
-        button p, button span {
-            color: inherit !important; 
+        /* 5. 針對 iPhone 的按鈕點擊修正 (防止點不到) */
+        button, .stNumberInput, .stSlider {
+            pointer-events: auto !important;
         }
 
+        /* 6. 上傳框區塊字體再加黑 */
+        [data-testid="stFileUploader"] * {
+            color: black !important;
+            -webkit-text-fill-color: black !important;
+        }
+        
+        /* 藍色按鈕保持清晰 */
+        div.stButton > button {
+            background-color: #007bff !important;
+            color: white !important;
+            -webkit-text-fill-color: white !important;
+            opacity: 1 !important;
+        }
     </style>
-    
-    <head>
-        <link rel="manifest" href="./manifest.json">
-        <link rel="icon" sizes="512x512" href="./static/logo.png">
-        <link rel="apple-touch-icon" href="./static/logo.png">
-        <meta name="theme-color" content="#ffffff">
-    </head>
     """,
     unsafe_allow_html=True
 )
@@ -208,6 +206,7 @@ if st.session_state.final_pdf_data:
         b64_pdf = base64.b64encode(st.session_state.final_pdf_data).decode('utf-8')
         pdf_display = f'<iframe src="data:application/pdf;base64,{b64_pdf}" width="100%" height="600"></iframe>'
         st.markdown(pdf_display, unsafe_allow_html=True)
+
 
 
 
