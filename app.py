@@ -69,7 +69,7 @@ st.markdown(
         /* 3. 針對 Streamlit 的主要按鈕 (Primary Button) */
         div.stButton > button:first-child {
             background-color: #f0f2f6 !important; /* 淺灰色按鈕背景 */
-            color: #31333F !important;           /* 深灰色文字 */
+            color: #000000 !important;           /* 深灰色文字 */
             border: 1px solid #d1d1d1 !important;
             font-weight: bold !important;
         }
@@ -80,7 +80,7 @@ st.markdown(
         }
         
         [data-testid="stFileUploader"] section {
-            background-color: #e9ecef !important; /* 稍微加深背景灰色，讓白色文字在對比下失效 */
+            background-color: #000000 !important; /* 稍微加深背景灰色，讓白色文字在對比下失效 */
             border: 2px dashed #6c757d !important; /* 邊框加深 */
         }
 
