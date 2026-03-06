@@ -14,7 +14,7 @@ pinned: false
 這是一個專門為藝術展覽開發的自動化工具。透過 **Python** 與 **Streamlit** 驅動，能讀取 Excel 清單並自動將資料填入 PDF 模板，實現一鍵批次排版。
 
 ## 🌟 重點特色
-- **繁體中文支援**：內建 `標楷體 (kaiu.ttf)`，解決 PDF 中文亂碼問題。
+- **繁體中文支援**：內建 `標楷體 (msjhbd.ttc)`，解決 PDF 中文亂碼問題。
 - **即時排版微調**：
   - 調整文字 X/Y 座標位置。
   - 自訂作品名、年代、作者的字體大小。
@@ -48,6 +48,7 @@ pinned: false
 可以透過以下連結直接在線上使用此工具：
 - https://huggingface.co/spaces/WenzhenG107/art-card-generator
 - https://art-card-generator-gaggshe93vfd3bk3vnzje8.streamlit.app/
+
 
 
 
