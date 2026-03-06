@@ -15,7 +15,8 @@ jobs:
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
         run: |
-          # 告訴 Git 忽略大檔案檢查的緩衝區限制
+          
           git config --global http.postBuffer 524288000
-          # 強制推送到 Hugging Face
+          
+
           git push --force https://WenzhenG107:$HF_TOKEN@huggingface.co/spaces/WenzhenG107/art-card-generator main
