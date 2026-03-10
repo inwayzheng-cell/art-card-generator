@@ -117,17 +117,28 @@ st.markdown(
 st.title("製作小卡")
 
 with st.sidebar:
-    st.header("📏 排版")
+    st.header("📏 排版設定")
     xl = st.number_input("左欄(往右偏加大,往左偏減小)", value=166.0)
     xr = st.number_input("右欄(往右偏加大,往左偏減小)", value=435.0)
+    
     st.divider()
+    st.subheader("🔠 字體大小")
     st_sz = st.slider("作品名 字體大小", 15.0, 25.0, 18.5)
     si_sz = st.slider("大小/年代 字體大小", 10.0, 20.0, 14.5)
     sa_sz = st.slider("作者 字體大小", 10.0, 20.0, 16.0)
+    
     st.divider()
-    g1 = st.number_input("作品名 -> 大小年代間距", value=30.0)
+    st.subheader("↕️ 上下間距")
+    g1 = st.number_input("作品名 -> 大小與年代間距", value=30.0)
     g2 = st.number_input("作品名 -> 作者間距", value=61.0)
-
+    
+    st.divider()
+    st.subheader("↔️ 資訊欄精密微調")
+    # 🚀 新增這兩行：
+    gi = st.number_input("大小與年代 之間的間距 (藍色)", value=15.0)
+    h_off = st.number_input("大小與年代 整體水平位移 (紅色)", value=24.0)
+    
+    st.caption("提示：位移正值往右，負值往左")
 
 if "final_pdf_data" not in st.session_state:
     st.session_state.final_pdf_data = None
@@ -153,21 +164,30 @@ if st.button("🚀 開始生成 PDF 並預覽", use_container_width=True):
                     packet = io.BytesIO()
                     can = canvas.Canvas(packet, pagesize=A4)
                     
-                    for i in range(10):
-                        idx = page_start + i
-                        if idx < len(df):
-                            row = df.iloc[idx]
-                            
-                            cx = xl if i < 5 else xr
-                            cy = [776.0, 612.5, 447.5, 284.5, 119.5][i % 5]
-                            
-                            
-                            can.setFont(FONT_NAME, st_sz)
-                            can.drawCentredString(cx, cy, format_value(row.iloc[2])) # 作品名
-                            can.setFont(FONT_NAME, si_sz)
-                            can.drawCentredString(cx, cy - g1, f"{format_value(row.iloc[3])} {format_value(row.iloc[4])}") # 大小 年份
-                            can.setFont(FONT_NAME, sa_sz)
-                            can.drawCentredString(cx, cy - g2, format_value(row.iloc[1])) # 作者
+# --- 在 run_process 方法內部的繪製迴圈中 ---
+for i in range(10):
+    idx = page_start + i
+    if idx < len(df):
+        row = df.iloc[idx]
+        cx, cy = (xl if i < 5 else xr), y_list[i % 5]
+        
+        # 1. 繪製作品名 (置中)
+        can.setFont("UserFont", st)
+        can.drawCentredString(cx, cy, format_value(row.iloc[2]))
+        
+        # 2. 繪製「大小」與「年代」 (應用內部間距與整體位移)
+        can.setFont("UserFont", si)
+        size_txt, year_txt = format_value(row.iloc[3]), format_value(row.iloc[4])
+        
+        # 計算水平位置：基準點 cx 加上整體位移 h_off
+        # 大小向左偏移間距的一半，年代向右偏移間距的一半
+        base_x = cx + h_off
+        can.drawRightString(base_x - (gi / 2), cy - g1, size_txt) # 大小 (向左偏)
+        can.drawString(base_x + (gi / 2), cy - g1, year_txt)      # 年代 (向右偏)
+        
+        # 3. 繪製作者名 (置中)
+        can.setFont("UserFont", sa)
+        can.drawCentredString(cx, cy - g2, format_value(row.iloc[1]))
                     
                     can.save()
                     packet.seek(0)
@@ -212,23 +232,3 @@ if st.session_state.final_pdf_data:
         b64_pdf = base64.b64encode(st.session_state.final_pdf_data).decode('utf-8')
         pdf_display = f'<iframe src="data:application/pdf;base64,{b64_pdf}" width="100%" height="600"></iframe>'
         st.markdown(pdf_display, unsafe_allow_html=True)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
