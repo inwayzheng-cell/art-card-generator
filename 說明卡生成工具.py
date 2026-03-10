@@ -49,14 +49,14 @@ class CardApp:
         self.font_path = tk.StringVar(value=DEFAULT_FONT_PATH)
         self.x_left = tk.StringVar(value="166.0")
         self.x_right = tk.StringVar(value="435.0")
-        self.y_vals = [tk.StringVar(value=str(v)) for v in [774.0, 610.5, 445.5, 282.5, 117.5]]
+        self.y_vals = [tk.StringVar(value=str(v)) for v in [776.0, 612.5, 447.5, 284.5, 119.5]]
         
         self.sz_title = tk.StringVar(value="18.5")
         self.sz_info = tk.StringVar(value="14.5")
         self.sz_author = tk.StringVar(value="16.0")
         
         self.gap1 = tk.StringVar(value="30.0")
-        self.gap2 = tk.StringVar(value="60.0")
+        self.gap2 = tk.StringVar(value="61.0")
         self.gap_info = tk.StringVar(value="15.0") 
         self.h_offset = tk.StringVar(value="24.0") 
 
