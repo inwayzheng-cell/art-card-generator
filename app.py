@@ -135,8 +135,8 @@ with st.sidebar:
     st.divider()
     st.subheader("↔️ 資訊欄精密微調")
     # 🚀 新增這兩行：
-    gi = st.number_input("大小與年代 之間的間距 (藍色)", value=15.0)
-    h_off = st.number_input("大小與年代 整體水平位移 (紅色)", value=24.0)
+    gi = st.number_input("大小與年代 之間的間距", value=15.0)
+    h_off = st.number_input("大小與年代 整體水平位移", value=24.0)
     
     st.caption("提示：位移正值往右，負值往左")
 
@@ -243,5 +243,6 @@ if st.session_state.final_pdf_data:
         b64_pdf = base64.b64encode(st.session_state.final_pdf_data).decode('utf-8')
         pdf_display = f'<iframe src="data:application/pdf;base64,{b64_pdf}" width="100%" height="600"></iframe>'
         st.markdown(pdf_display, unsafe_allow_html=True)
+
 
 
