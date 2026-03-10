@@ -126,7 +126,7 @@ with st.sidebar:
     sa_sz = st.slider("作者 字體大小", 10.0, 20.0, 16.0)
     st.divider()
     g1 = st.number_input("作品名 -> 大小年代間距", value=30.0)
-    g2 = st.number_input("作品名 -> 作者間距", value=60.0)
+    g2 = st.number_input("作品名 -> 作者間距", value=61.0)
 
 
 if "final_pdf_data" not in st.session_state:
@@ -159,7 +159,7 @@ if st.button("🚀 開始生成 PDF 並預覽", use_container_width=True):
                             row = df.iloc[idx]
                             
                             cx = xl if i < 5 else xr
-                            cy = [774.0, 610.5, 445.5, 282.5, 117.5][i % 5]
+                            cy = [776.0, 612.5, 447.5, 284.5, 119.5][i % 5]
                             
                             
                             can.setFont(FONT_NAME, st_sz)
@@ -212,6 +212,7 @@ if st.session_state.final_pdf_data:
         b64_pdf = base64.b64encode(st.session_state.final_pdf_data).decode('utf-8')
         pdf_display = f'<iframe src="data:application/pdf;base64,{b64_pdf}" width="100%" height="600"></iframe>'
         st.markdown(pdf_display, unsafe_allow_html=True)
+
 
 
 
