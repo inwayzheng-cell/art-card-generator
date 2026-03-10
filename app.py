@@ -156,42 +156,36 @@ if st.button("🚀 開始生成 PDF 並預覽", use_container_width=True):
             df = pd.read_excel(uploaded_excel)
             pdf_io = io.BytesIO()
             
-            with pikepdf.Pdf.open(uploaded_pdf) as src:
-                final_pdf = pikepdf.Pdf.new()
-                
-                
-                for page_start in range(0, len(df), 10):
-                    packet = io.BytesIO()
-                    can = canvas.Canvas(packet, pagesize=A4)
+            with pikepdf.Pdf.open(p_template) as src:
+        final_pdf = pikepdf.Pdf.new()
+        for page_start in range(0, len(df), 10):
+            packet = io.BytesIO()
+            can = canvas.Canvas(packet, pagesize=A4)
+            
+            # 🚀 這裡就是你出錯的第 168 行位置
+            for i in range(10):
+                idx = page_start + i
+                if idx < len(df):
+                    row = df.iloc[idx]
+                    cx, cy = (xl if i < 5 else xr), y_list[i % 5]
                     
-# --- 在 run_process 方法內部的繪製迴圈中 ---
-for i in range(10):
-    idx = page_start + i
-    if idx < len(df):
-        row = df.iloc[idx]
-        cx, cy = (xl if i < 5 else xr), y_list[i % 5]
-        
-        # 1. 繪製作品名 (置中)
-        can.setFont("UserFont", st)
-        can.drawCentredString(cx, cy, format_value(row.iloc[2]))
-        
-        # 2. 繪製「大小」與「年代」 (應用內部間距與整體位移)
-        can.setFont("UserFont", si)
-        size_txt, year_txt = format_value(row.iloc[3]), format_value(row.iloc[4])
-        
-        # 計算水平位置：基準點 cx 加上整體位移 h_off
-        # 大小向左偏移間距的一半，年代向右偏移間距的一半
-        base_x = cx + h_off
-        can.drawRightString(base_x - (gi / 2), cy - g1, size_txt) # 大小 (向左偏)
-        can.drawString(base_x + (gi / 2), cy - g1, year_txt)      # 年代 (向右偏)
-        
-        # 3. 繪製作者名 (置中)
-        can.setFont("UserFont", sa)
-        can.drawCentredString(cx, cy - g2, format_value(row.iloc[1]))
+                    # 1. 作品名
+                    can.setFont("UserFont", st_sz)
+                    can.drawCentredString(cx, cy, format_value(row.iloc[2]))
                     
-                    can.save()
-                    packet.seek(0)
+                    # 2. 大小與年代 (使用新變數 gi 和 h_off)
+                    can.setFont("UserFont", si_sz)
+                    size_txt, year_txt = format_value(row.iloc[3]), format_value(row.iloc[4])
+                    base_x = cx + h_off
+                    can.drawRightString(base_x - (gi / 2), cy - g1, size_txt)
+                    can.drawString(base_x + (gi / 2), cy - g1, year_txt)
                     
+                    # 3. 作者名
+                    can.setFont("UserFont", sa_sz)
+                    can.drawCentredString(cx, cy - g2, format_value(row.iloc[1]))
+            
+            can.save()
+            packet.seek(0)
                     
                     with pikepdf.Pdf.open(packet) as overlay:
                         dst_page = final_pdf.add_blank_page(page_size=A4)
@@ -232,3 +226,4 @@ if st.session_state.final_pdf_data:
         b64_pdf = base64.b64encode(st.session_state.final_pdf_data).decode('utf-8')
         pdf_display = f'<iframe src="data:application/pdf;base64,{b64_pdf}" width="100%" height="600"></iframe>'
         st.markdown(pdf_display, unsafe_allow_html=True)
+
