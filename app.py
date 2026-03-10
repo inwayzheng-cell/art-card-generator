@@ -153,51 +153,68 @@ with col2:
 if st.button("🚀 開始生成 PDF 並預覽", use_container_width=True):
     if uploaded_excel and uploaded_pdf:
         try:
+            # 1. 讀取資料並定義 Y 座標 (單機版的數值)
             df = pd.read_excel(uploaded_excel)
+            y_list = [774.0, 610.5, 445.5, 282.5, 117.5]
+            
+            # 2. 準備 PDF 容器
             pdf_io = io.BytesIO()
             
-            with pikepdf.Pdf.open(p_template) as src:
-        final_pdf = pikepdf.Pdf.new()
-        for page_start in range(0, len(df), 10):
-            packet = io.BytesIO()
-            can = canvas.Canvas(packet, pagesize=A4)
-            
-            # 🚀 這裡就是你出錯的第 168 行位置
-            for i in range(10):
-                idx = page_start + i
-                if idx < len(df):
-                    row = df.iloc[idx]
-                    cx, cy = (xl if i < 5 else xr), y_list[i % 5]
+            # 3. 開啟上傳的 PDF 模板 (這裏使用 uploaded_pdf 而不是 p_template)
+            with pikepdf.Pdf.open(uploaded_pdf) as src:
+                final_pdf = pikepdf.Pdf.new()
+                
+                # 計算頁數並開始處理
+                for page_start in range(0, len(df), 10):
+                    packet = io.BytesIO()
+                    can = canvas.Canvas(packet, pagesize=A4)
                     
-                    # 1. 作品名
-                    can.setFont("UserFont", st_sz)
-                    can.drawCentredString(cx, cy, format_value(row.iloc[2]))
+                    # 註冊字體 (確保繪圖時使用正確的名稱)
+                    # 如果上方註冊的是 FONT_NAME，這裡就用 FONT_NAME
                     
-                    # 2. 大小與年代 (使用新變數 gi 和 h_off)
-                    can.setFont("UserFont", si_sz)
-                    size_txt, year_txt = format_value(row.iloc[3]), format_value(row.iloc[4])
-                    base_x = cx + h_off
-                    can.drawRightString(base_x - (gi / 2), cy - g1, size_txt)
-                    can.drawString(base_x + (gi / 2), cy - g1, year_txt)
+                    for i in range(10):
+                        idx = page_start + i
+                        if idx < len(df):
+                            row = df.iloc[idx]
+                            # 判斷左欄或右欄
+                            cx = xl if i < 5 else xr
+                            cy = y_list[i % 5]
+                            
+                            # --- 繪製內容 ---
+                            # 1. 作品名
+                            can.setFont(FONT_NAME, st_sz)
+                            can.drawCentredString(cx, cy, format_value(row.iloc[2]))
+                            
+                            # 2. 大小與年代 (使用 gi 和 h_off)
+                            can.setFont(FONT_NAME, si_sz)
+                            size_txt = format_value(row.iloc[3])
+                            year_txt = format_value(row.iloc[4])
+                            base_x = cx + h_off
+                            can.drawRightString(base_x - (gi / 2), cy - g1, size_txt)
+                            can.drawString(base_x + (gi / 2), cy - g1, year_txt)
+                            
+                            # 3. 作者名
+                            can.setFont(FONT_NAME, sa_sz)
+                            can.drawCentredString(cx, cy - g2, format_value(row.iloc[1]))
                     
-                    # 3. 作者名
-                    can.setFont("UserFont", sa_sz)
-                    can.drawCentredString(cx, cy - g2, format_value(row.iloc[1]))
-            
-            can.save()
-            packet.seek(0)
+                    can.save()
+                    packet.seek(0)
                     
+                    # 將生成的文字層疊加到模板上
                     with pikepdf.Pdf.open(packet) as overlay:
                         dst_page = final_pdf.add_blank_page(page_size=A4)
                         dst_page.add_underlay(src.pages[0])
                         dst_page.add_overlay(overlay.pages[0])
                 
+                # 儲存結果到 session_state
                 final_pdf.save(pdf_io)
                 st.session_state.final_pdf_data = pdf_io.getvalue()
-                st.success(f"✅ 生成成功！共{len(df)}小張。")
+                st.success(f"✅ 生成成功！共 {len(df)} 筆資料。")
                 
         except Exception as e:
             st.error(f"發生錯誤: {e}")
+            # 打印詳細錯誤到後台日誌，方便除錯
+            print(f"Error Details: {e}")
     else:
         st.warning("⚠ 請先上傳 Excel 與 PDF 模板。")
 
@@ -226,4 +243,5 @@ if st.session_state.final_pdf_data:
         b64_pdf = base64.b64encode(st.session_state.final_pdf_data).decode('utf-8')
         pdf_display = f'<iframe src="data:application/pdf;base64,{b64_pdf}" width="100%" height="600"></iframe>'
         st.markdown(pdf_display, unsafe_allow_html=True)
+
 
